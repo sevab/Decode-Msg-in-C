@@ -1,0 +1,14 @@
+mkdir -p build
+echo Compiling
+gcc -c -ansi src/readWheel.c -I. -o build/readWheel.o
+gcc -c -ansi src/decodeMessage.c -I. -o build/decodeMessage.o
+
+printf '\e[1;33mProgram compiled ok \e[0m\n'
+echo Linking...
+# gcc build/readWheel.o build/decodeMessage.o -lm -o build/decodeMessage
+gcc build/readWheel.o build/decodeMessage.o -lm -o build/decodeMessage
+
+printf '\e[0;32mProgram compiled and linked ok \e[0m\n' # echo Program compiled and linked ok
+printf '\e[0;36mRunning %s: \e[0m\n' ./${1} # echo Running ./${1}:
+# ./build/decodeMessage src/exampleWheel.txt -1 6 2 0 -4
+./build/decodeMessage src/exampleWheel2.txt -2 -1 2 10 11 6 -3 -1 9 4 -7 3 5 -9 0 -3 -13 -9 -5 1 -13 12 7

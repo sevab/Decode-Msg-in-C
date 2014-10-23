@@ -1,0 +1,1 @@
+void printArgs(int, char const*[]);
