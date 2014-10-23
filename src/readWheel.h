@@ -2,20 +2,16 @@
 # include <string.h>
 # include <stdlib.h>
 
-
 typedef struct Node {
   char          character;
-  struct Node   *nextChild; // stores reference to the next child clockwise
-  struct Node   *previousChild; // stores reference to the next child anti-clockwise
+  struct Node   *next; 		// stores reference to the next node clockwise
+  struct Node   *previous;  // stores reference to the next node anti-clockwise
 } Node;
-
 
 
 // Constuct Wheel
 Node* constuctWheel(char*);
 Node* newNode(char);
-// DELETE:
-// void printWheel(Node *);
 
 // Pars ints
 int* parseIntegers(int, char const *[]);

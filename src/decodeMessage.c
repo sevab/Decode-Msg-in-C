@@ -11,6 +11,7 @@
   - refactor: rename previousChild & nextChild to previous & next
   - try creating my own weird wheel (repeating chars, white spaces, etc)
   - (!!!) catch errors if we pass something useless (e.g. non-integers, corrupt files, etc)
+  - rename constuct method to construct
  */
 
 int main(int argc, char const *argv[]) {

@@ -10,11 +10,11 @@ char* decodeMessage(Node *root, int *codedMessage, int lengthOfMessage) {
   for (int i = 0; i < lengthOfMessage; ++i) {
     if (codedMessage[i] < 0) {
       for (int j = 0; j > codedMessage[i]; --j) {
-        currentNode = currentNode->previousChild;
+        currentNode = currentNode->previous;
       }
     } else {
       for (int k = 0; k < codedMessage[i]; ++k) {
-        currentNode = currentNode->nextChild;
+        currentNode = currentNode->next;
       }
     }
     decodedMessage[i] = currentNode->character;
@@ -30,42 +30,33 @@ char* decodeMessage(Node *root, int *codedMessage, int lengthOfMessage) {
 Node* constuctWheel(char *flatWheel) {
   unsigned long wheelLength = strlen(flatWheel);
 
-  /* instantiate root separately */
+  /* construct root node separately */
   Node *root = newNode(flatWheel[0]);
   Node *previousNode = NULL;
   Node *currentNode = root;
 
   for (int i = 1; i < wheelLength; ++i) {
-    currentNode->nextChild     = newNode(flatWheel[i]);
-    currentNode->previousChild = previousNode;
+    currentNode->next     = newNode(flatWheel[i]);
+    currentNode->previous = previousNode;
 
     previousNode = currentNode;
-    currentNode = currentNode->nextChild;
+    currentNode = currentNode->next;
   }
-  /* link the ends of the wheel*/
-  currentNode->nextChild = root;
-  currentNode->previousChild = previousNode;
-  root->previousChild = currentNode;
-  // DELETE:
-  // printWheel(root);
+
+  /* construct last node separately */
+  currentNode->next = root;
+  currentNode->previous = previousNode;
+  /* link the root node with the last node */
+  root->previous = currentNode;
   return root;
 }
-
-// DELETE: since wouldn't work for other wheels
-// void printWheel(Node *root) {
-//   do {
-//     printf("%c\n", root->character);
-//     root = (*root).previousChild;
-//   } while(root->character != 'A'); // } while(1);
-// }
-
 
 Node* newNode(char character) {
   Node *node = malloc(sizeof *node);
 
   (*node).character = character;
-  (*node).nextChild = NULL;
-  (*node).previousChild = NULL;
+  (*node).next = NULL;
+  (*node).previous = NULL;
 
   // return pointer to the newly created node
   return node;
