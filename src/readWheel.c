@@ -100,6 +100,7 @@ char* parseWheelFile(const char *fileName) {
       if (length == 2) {
         fprintf(stderr, "Error: Wheel file must contain only one character per line.\n");
         printUsageMessage();
+        fclose(fp);
         exit(1);
       }
     }
