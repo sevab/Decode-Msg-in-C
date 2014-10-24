@@ -10,7 +10,7 @@ typedef struct Node {
 
 
 // Constuct Wheel
-Node* constuctWheel(char*);
+Node* constructWheel(char*);
 Node* newNode(char);
 
 // Pars ints
@@ -18,6 +18,7 @@ int* parseIntegers(int, char const *[]);
 char* decodeMessage(Node*, int*, int);
 
 // Parse Wheel
-char* parseWheelFile(char[]);
-FILE* readFile(char[]);
-int countLines(char[]);
+char* parseWheelFile(const char*);
+FILE* readFile(const char*);
+int countLines(const char*);
+void validateStrIsInt(const char *);

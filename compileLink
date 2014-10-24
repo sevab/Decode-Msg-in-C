@@ -14,4 +14,6 @@ gcc build/readWheel.o build/decodeMessage.o -lm -o build/decodeMessage
 printf '\e[0;32mProgram compiled and linked ok \e[0m\n'
 printf '\e[0;36mRunning %s: \e[0m\n' ./${1}
 # ./build/decodeMessage src/exampleWheel.txt -1 6 2 0 -4
+# ./build/decodeMessage src/exampleWheel.txt -11 46 102 4000 -9444
 ./build/decodeMessage src/exampleWheel2.txt -2 -1 2 10 11 6 -3 -1 9 4 -7 3 5 -9 0 -3 -13 -9 -5 1 -13 12 7
+# ./build/decodeMessage src/exampleWheel3.txt -2

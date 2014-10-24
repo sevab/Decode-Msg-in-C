@@ -27,7 +27,7 @@ char* decodeMessage(Node *root, int *codedMessage, int lengthOfMessage) {
 /*****************************************************************************/
 /* Construct a wheel                                                         */
 /*****************************************************************************/
-Node* constuctWheel(char *flatWheel) {
+Node* constructWheel(char *flatWheel) {
   unsigned long wheelLength = strlen(flatWheel);
 
   /* construct root node separately */
@@ -51,14 +51,13 @@ Node* constuctWheel(char *flatWheel) {
   return root;
 }
 
+/* return pointer to the newly created node */
 Node* newNode(char character) {
   Node *node = malloc(sizeof *node);
+  node->character = character;
+  node->next = NULL;
+  node->previous = NULL;
 
-  (*node).character = character;
-  (*node).next = NULL;
-  (*node).previous = NULL;
-
-  // return pointer to the newly created node
   return node;
 }
 
@@ -68,14 +67,13 @@ Node* newNode(char character) {
 /*****************************************************************************/
 int* parseIntegers(int argc, char const *argv[]) {
   int *codedMessage = malloc((argc-2) * sizeof *codedMessage);
-
   int i;
   int j = 0;
-  /* skip first arguements which aren't integers */
-  // TODO: are we incrementing i & j properly?? http://stackoverflow.com/questions/24853/what-is-the-difference-between-i-and-i
-  for (i = 2; i < argc; ++i, j++) {
+  /* parse input integers into codedMessage int array while
+   * skiping first 2 arguements which aren't integers */
+  for (i = 2; i < argc; ++i, ++j) {
+    validateStrIsInt(argv[i]);
     codedMessage[j] = atoi(argv[i]);
-    // printf("%i ", codedMessage[j]);
   }
   return codedMessage;
 }
@@ -83,19 +81,29 @@ int* parseIntegers(int argc, char const *argv[]) {
 /*****************************************************************************/
 /* Parce Wheel                                                               */
 /*****************************************************************************/
-char* parseWheelFile(char fileName[]) {
-  /* TODO: Shall we rather assume that characters are strings? */
+/* mention how it would read the first character of each line,
+ * so doesn't matter if each line contains more characters, which indeed is not specified in the spec (i.e. Coursework) */
 
+char* parseWheelFile(const char *fileName) {
   FILE *fp = readFile(fileName);
   int linesInFile = countLines(fileName);
+  char ch;
+  char *flatWheel = malloc(linesInFile * sizeof *flatWheel); // allocate flatWheel.
+  int length = 0;
 
-  /* allocate enough memory to store characters from each line in the wheel file */
-  char line[3];
-  char *flatWheel = malloc(linesInFile * sizeof *flatWheel);
-  int i = 0;
-  while (fgets(line, 3, fp) != NULL) {
-    flatWheel[i] = line[0]; // alt: sscanf (line, "%c", &line[0]);
-    i++;
+
+  for (int i = 0; i < linesInFile+1; ++i) {
+    while ( ((ch = fgetc(fp)) != EOF) && (ch != '\n') ) {
+      flatWheel[i] = ch;
+      length++;
+      /* make sure there's only one character on this line */
+      if (length == 2) {
+        fprintf(stderr, "Error: Wheel file must contain only one character per line.\n");
+        printUsageMessage();
+        exit(1);
+      }
+    }
+    length = 0; // reset length
   }
 
   fclose (fp);
@@ -103,7 +111,7 @@ char* parseWheelFile(char fileName[]) {
 }
 
 
-int countLines(char fileName[]) {
+int countLines(const char *fileName) {
   FILE *fp = readFile(fileName);
 
   int  c;
@@ -117,12 +125,23 @@ int countLines(char fileName[]) {
   return newLineCount;
 }
 
-FILE* readFile(char fileName[]) {
+FILE* readFile(const char *fileName) {
   FILE *fp;
   fp = fopen(fileName, "r");
   if ( fp == NULL ) {
-    printf (" Cannot open file for read access \n ");
-    exit (1);
+    fprintf(stderr,"Unable to open file '%s' for read access\n", fileName);
+    exit(1);
   }
+
   return fp;
+}
+void validateStrIsInt(const char *intStr) {
+  char * endptr = NULL;
+  int out;
+  strtol(intStr, &endptr, 10);
+  if(*endptr != 0) {
+    fprintf(stderr, "Error: Coded message must consist of integers separated by space.\n");
+    printUsageMessage();
+    exit(1);
+  }
 }
