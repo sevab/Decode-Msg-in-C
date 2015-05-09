@@ -41,3 +41,9 @@ To run decodeMessage program using your own wheel file and message place your wh
 ```bash
 ./build/decodeMessage src/nameOfWheelFile.txt [list of integers]
 ```
+
+# My Implementation
+
+To represent the decoding wheel a doubly linked list was used which was implemented using C’s struct structure. The implemented Node structure represents each character in the wheel by storing the character itself as well as references to the next and previous node in the doubly linked list.
+
+The decodeWheel program was designed according to specification to read the passed file from the command line as well as an array of integers representing the coded message. When run the program was designed to first parse the passed integers making sure that valid digit values where passed. If all the integers are validated it then prints all the passed arguments according to specification. It then processes the given wheel file making sure that there’s only one character on each line throwing an error if there are more. While processing the file it constructs a string containing all characters in a row. Returned string is then passed to a constructWheel function that constructs a wheel using described Node structure. Once that is done, the wheel and coded message are passed to the decodeMessage function that decides the message using the coded message eventually printing out the decoded message.
